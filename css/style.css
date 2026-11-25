@@ -285,6 +285,8 @@ body.loaded .scroll-cue { opacity: 1; }
   text-shadow: 0 0 34px rgba(214, 183, 122, .45);
 }
 .wletter.dim { opacity: .28; }
+.wletter:hover { color: var(--rose); }
+.wletter.dim:hover { opacity: .8; }
 
 /* Carte de la lettre active */
 .letter-stage {

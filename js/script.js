@@ -346,10 +346,16 @@ function initLetters() {
     if (restartTimer) schedule();
   }
 
+  function next() {
+    current = (current + 1) % CONFIG.letters.length;
+    render(current);
+    schedule();
+  }
+
   function schedule() {
     clearTimeout(timer);
     if (!started || reduceMotion) return;
-    timer = setTimeout(() => show(current + 1), CONFIG.autoAdvanceMs);
+    timer = setTimeout(next, CONFIG.autoAdvanceMs);
   }
 
   // Apparition des lettres une à une quand la section entre dans le champ
