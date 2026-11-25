@@ -41,7 +41,6 @@ const CONFIG = {
     }
   ],
 
-  autoAdvanceMs: 6200,   // rythme de défilement automatique des lettres
   letterStaggerMs: 140,  // délai entre chaque lettre à l'apparition
   finaleStaggerMs: 1400  // délai entre chaque prénom final
 };
@@ -291,8 +290,6 @@ function initLetters() {
   const letters = Array.from(wordEl.querySelectorAll(".wletter"));
 
   let current = 0;
-  let timer = null;
-  let started = false;
 
   // Points de navigation
   CONFIG.letters.forEach((_, i) => {
@@ -300,7 +297,7 @@ function initLetters() {
     dot.type = "button";
     dot.setAttribute("role", "tab");
     dot.setAttribute("aria-label", `Lettre ${CONFIG.letters[i].letter}`);
-    dot.addEventListener("click", () => show(i, true));
+    dot.addEventListener("click", () => show(i));
     dotsWrap.appendChild(dot);
   });
   const dots = Array.from(dotsWrap.children);
@@ -311,7 +308,7 @@ function initLetters() {
     el.setAttribute("role", "button");
     el.setAttribute("tabindex", "0");
     el.setAttribute("aria-label", `Lettre ${CONFIG.letters[i].letter}`);
-    const jump = () => show(i, true);
+    const jump = () => show(i);
     el.addEventListener("click", jump);
     el.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); jump(); }
@@ -340,22 +337,14 @@ function initLetters() {
     dots.forEach((d, j) => d.classList.toggle("on", j === i));
   }
 
-  function show(i, restartTimer = false) {
+  // Clic sur la carte → lettre suivante (progression naturelle M → E)
+  document.getElementById("letterCard").addEventListener("click", () => {
+    show(current + 1);
+  });
+
+  function show(i) {
     current = (i + CONFIG.letters.length) % CONFIG.letters.length;
     render(current);
-    if (restartTimer) schedule();
-  }
-
-  function next() {
-    current = (current + 1) % CONFIG.letters.length;
-    render(current);
-    schedule();
-  }
-
-  function schedule() {
-    clearTimeout(timer);
-    if (!started || reduceMotion) return;
-    timer = setTimeout(next, CONFIG.autoAdvanceMs);
   }
 
   // Apparition des lettres une à une quand la section entre dans le champ
@@ -370,9 +359,7 @@ function initLetters() {
         stage.style.opacity = "1";
         stage.style.transform = "none";
         stage.classList.add("revealed");
-        started = true;
         show(0);
-        schedule();
       }, CONFIG.letters.length * CONFIG.letterStaggerMs + 350);
       break;
     }
