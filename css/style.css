@@ -459,6 +459,13 @@ body.loaded .scroll-cue { opacity: 1; }
 .petals.tone-rose i {
   background: linear-gradient(135deg, rgba(201,154,168,.55), rgba(214,183,122,.35));
 }
+/* Pétales qui déferlent sur le portrait (roses, rognés par le cadre) */
+.frame .petals { z-index: 1; }
+.frame-petals i {
+  background: linear-gradient(135deg, rgba(233,180,195,.85), rgba(214,183,122,.6)) !important;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+}
+
 .petals.tone-dim i {
   background: linear-gradient(135deg, rgba(201,154,168,.3), rgba(214,183,122,.22));
 }
@@ -581,11 +588,11 @@ body.loaded .scroll-cue { opacity: 1; }
   position: absolute; inset: 0;
   background: var(--ink-2);
   transform-origin: top;
-  transform: scaleY(0);
+  transform: scaleY(1);
   z-index: 3;
   transition: transform 1.4s var(--ease-out) .2s;
 }
-.frame.in::after { transform: scaleY(1); }
+.frame.in::after { transform: scaleY(0); }
 
 .portrait-caption {
   font-family: var(--serif);
@@ -734,6 +741,7 @@ body.loaded .scroll-cue { opacity: 1; }
 /* ============================================================
    Lightbox portrait
    ============================================================ */
+.lightbox[hidden] { display: none; }
 .lightbox {
   position: fixed; inset: 0;
   z-index: 100;

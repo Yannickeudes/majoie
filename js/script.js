@@ -301,6 +301,7 @@ function initLetters() {
     dotsWrap.appendChild(dot);
   });
   const dots = Array.from(dotsWrap.children);
+  dotsWrap.addEventListener("click", (e) => e.stopPropagation());
 
   // Clic sur une lettre du prénom → saute à cette lettre
   letters.forEach((el, i) => {
