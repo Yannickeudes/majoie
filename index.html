@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>MAJOIE</title>
+  <meta name="description" content="Une petite expérience à feuilletter lentement." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:ital,wght@0,300;0,400;0,500;1,300&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <noscript>
+    <style>
+      .hero-line, .hero-name, .btn-enter, .hero-hint { opacity: 1 !important; transform: none !important; filter: none !important; }
+      .reveal, .wletter, .final-name { opacity: 1 !important; transform: none !important; filter: none !important; }
+      #dziedzomName { opacity: 1 !important; transform: none !important; filter: none !important; }
+      .letter-stage { opacity: 1 !important; transform: none !important; }
+      .petals { display: none; }
+    </style>
+  </noscript>
+</head>
+<body>
+
+  <!-- Particules lumineuses (canvas global, discret) -->
+  <canvas id="dust" aria-hidden="true"></canvas>
+
+  <!-- Barre de progression discrète -->
+  <div id="progress" aria-hidden="true"><span></span></div>
+
+  <!-- ============ ÉTAPE 1 — ACCUEIL ============ -->
+  <section class="scene hero" id="hero">
+    <div class="hero-inner">
+      <p class="hero-line reveal-line">Il y a des prénoms qu'on prononce.</p>
+      <p class="hero-line reveal-line">Et d'autres qui méritent qu'on s'y attarde.</p>
+      <h1 class="hero-name reveal-name">Majoie<span class="dot">.</span></h1>
+      <button class="btn-enter" id="enterBtn" type="button">
+        Entrer dans ton univers
+        <span class="btn-arrow" aria-hidden="true">→</span>
+      </button>
+      <p class="hero-hint">( fais défiler, ou touche pour entrer )</p>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- ============ ÉTAPE 2 — MAJOIE ============ -->
+  <section class="scene majoie" id="majoie">
+    <div class="section-head">
+      <p class="kicker">Première façon de te nommer</p>
+      <h2 class="word" id="majoieWord" aria-label="Majoie">
+        <span class="wletter" data-i="0">M</span><span class="wletter" data-i="1">A</span><span class="wletter" data-i="2">J</span><span class="wletter" data-i="3">O</span><span class="wletter" data-i="4">I</span><span class="wletter" data-i="5">E</span>
+      </h2>
+      <p class="lang-note hand">en français</p>
+    </div>
+
+    <div class="letter-stage" id="letterStage">
+      <div class="letter-card" id="letterCard">
+        <p class="card-letter" id="cardLetter">M</p>
+        <h3 class="card-word" id="cardWord">Magnétique</h3>
+        <p class="card-text" id="cardText"></p>
+        <div class="card-dots" id="cardDots" role="tablist" aria-label="Choisir une lettre"></div>
+      </div>
+      <p class="card-nav-hint">touche les lettres ou les points pour naviguer · la suite défile lentement</p>
+    </div>
+  </section>
+
+  <!-- ============ ÉTAPE 3 — DZIEDZOM ============ -->
+  <section class="scene dziedzom" id="dziedzom">
+    <div class="section-head">
+      <p class="kicker reveal">Mais ton prénom ne se limite pas<br />à la façon dont je le prononce.</p>
+      <h2 class="word name-big reveal" id="dziedzomName">Dziedzom<span class="dot">.</span></h2>
+      <p class="lang-note hand reveal">en éwé — ça sonne comme une mélodie</p>
+    </div>
+    <div class="dziedzom-text">
+      <p class="reveal">Certains prénoms se contentent d'être dits.<br />Le tien a l'air de chanter tout seul.</p>
+      <p class="reveal">Il y a une chaleur dans cette sonorité, quelque chose d' ancien et de doux à la fois — comme une voix qu'on aurait déjà entendue sans savoir d'où elle venait.</p>
+      <p class="reveal hand-sign">et puis, il n'y a que toi pour porter ce nom.</p>
+    </div>
+    <div class="petals" aria-hidden="true"></div>
+  </section>
+
+  <!-- ============ ÉTAPE 4 — JOY ============ -->
+  <section class="scene joy" id="joy">
+    <div class="section-head light">
+      <h2 class="word name-big reveal">Joy<span class="dot">.</span></h2>
+      <p class="lang-note hand reveal">en anglais — la plus courte des trois</p>
+    </div>
+    <div class="joy-text">
+      <p class="reveal">Some names sound like a feeling.</p>
+      <p class="reveal">Some people make that feeling a little more real.</p>
+    </div>
+  </section>
+
+  <!-- ============ ÉTAPE 5 — SON PORTRAIT ============ -->
+  <section class="scene portrait" id="portrait">
+    <div class="portrait-wrap">
+      <figure class="frame" id="portraitFrame">
+        <div class="frame-light" aria-hidden="true"></div>
+        <img src="assets/images/majoie.jpg" alt="Portrait de Majoie" id="portraitImg" />
+      </figure>
+      <p class="portrait-caption reveal">et puis il y a toi, simplement.</p>
+    </div>
+  </section>
+
+  <!-- ============ ÉTAPE 6 — LA LETTRE ============ -->
+  <section class="scene lettre" id="letter">
+    <div class="letter-body">
+      <p class="reveal">Je ne voulais pas simplement t'envoyer un message de plus.</p>
+      <p class="reveal">J'avais envie de créer quelque chose, quelque chose de différent, et de le faire autour de toi.</p>
+      <p class="reveal">Ce n'est pas une grande déclaration avec des promesses ou des mots exagérés. C'est simplement une façon de te dire que je trouve qu'il y a quelque chose de beau chez toi, quelque chose qui mérite qu'on prenne le temps de le remarquer.</p>
+      <p class="reveal">Alors j'ai pris un peu de mon temps pour faire ceci. Sans attente particulière. Juste avec l'envie de te faire sourire, peut-être, et de laisser quelque chose de joli derrière ces quelques lignes.</p>
+      <p class="reveal finale-line">Et c'est tout. Ou peut-être déjà beaucoup.</p>
+      <p class="signature hand reveal">— avec tout mon bien</p>
+    </div>
+  </section>
+
+  <!-- ============ ÉTAPE 7 — FINALE ============ -->
+  <section class="scene finale" id="finale">
+    <div class="finale-names">
+      <p class="final-name" data-delay="0">Majoie<span class="dot">.</span></p>
+      <p class="final-name" data-delay="1">Dziedzom<span class="dot">.</span></p>
+      <p class="final-name" data-delay="2">Joy<span class="dot">.</span></p>
+    </div>
+    <div class="finale-text">
+      <p class="reveal">Trois noms.<br />Une seule personne.<br />Et une petite pensée qui a pris la forme d'un site.</p>
+      <p class="reveal thanks">Merci d'avoir pris le temps de découvrir ceci.</p>
+    </div>
+    <button class="btn-top" id="topBtn" type="button">recommencer doucement</button>
+  </section>
+
+  <!-- Lightbox portrait -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Portrait agrandi" hidden>
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Fermer">×</button>
+    <img src="assets/images/majoie.jpg" alt="Portrait de Majoie" />
+  </div>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>
