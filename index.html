@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <noscript>
     <style>
-      .hero-line, .hero-name, .btn-enter, .hero-hint { opacity: 1 !important; transform: none !important; filter: none !important; }
+      .hero-line, .hero-name, .btn-enter, .hero-hint, .hero-hand, .hletter { opacity: 1 !important; transform: none !important; filter: none !important; }
       .reveal, .wletter, .final-name { opacity: 1 !important; transform: none !important; filter: none !important; }
       #dziedzomName { opacity: 1 !important; transform: none !important; filter: none !important; }
       .letter-stage { opacity: 1 !important; transform: none !important; }
@@ -20,6 +20,24 @@
   </noscript>
 </head>
 <body>
+
+  <!-- Symboles floraux réutilisables -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="bloom" viewBox="0 0 48 48">
+        <g fill="#C99AA8" opacity=".9">
+          <ellipse cx="24" cy="13" rx="5.5" ry="9"/>
+          <ellipse cx="24" cy="13" rx="5.5" ry="9" transform="rotate(60 24 24)"/>
+          <ellipse cx="24" cy="13" rx="5.5" ry="9" transform="rotate(120 24 24)"/>
+          <ellipse cx="24" cy="13" rx="5.5" ry="9" transform="rotate(180 24 24)"/>
+          <ellipse cx="24" cy="13" rx="5.5" ry="9" transform="rotate(240 24 24)"/>
+          <ellipse cx="24" cy="13" rx="5.5" ry="9" transform="rotate(300 24 24)"/>
+        </g>
+        <circle cx="24" cy="24" r="4.2" fill="#D6B77A"/>
+        <circle cx="24" cy="24" r="1.8" fill="#F4EEE9" opacity=".85"/>
+      </symbol>
+    </defs>
+  </svg>
 
   <!-- Particules lumineuses (canvas global, discret) -->
   <canvas id="dust" aria-hidden="true"></canvas>
@@ -32,7 +50,8 @@
     <div class="hero-inner">
       <p class="hero-line reveal-line">Il y a des prénoms qu'on prononce.</p>
       <p class="hero-line reveal-line">Et d'autres qui méritent qu'on s'y attarde.</p>
-      <h1 class="hero-name reveal-name">Majoie<span class="dot">.</span></h1>
+      <h1 class="hero-name reveal-name" aria-label="Majoie."><span class="hletter" aria-hidden="true">M</span><span class="hletter" aria-hidden="true">a</span><span class="hletter" aria-hidden="true">j</span><span class="hletter" aria-hidden="true">o</span><span class="hletter" aria-hidden="true">i</span><span class="hletter" aria-hidden="true">e</span><span class="dot">.</span></h1>
+      <p class="hero-hand hand">un prénom, trois langues</p>
       <button class="btn-enter" id="enterBtn" type="button">
         Entrer dans ton univers
         <span class="btn-arrow" aria-hidden="true">→</span>
@@ -40,6 +59,8 @@
       <p class="hero-hint">( fais défiler, ou touche pour entrer )</p>
     </div>
     <div class="scroll-cue" aria-hidden="true"><span></span></div>
+    <div class="petals tone-gold" data-count="7" aria-hidden="true"></div>
+    <svg class="bloom bloom-hero" aria-hidden="true"><use href="#bloom"/></svg>
   </section>
 
   <!-- ============ ÉTAPE 2 — MAJOIE ============ -->
@@ -60,6 +81,7 @@
         <div class="card-dots" id="cardDots" role="tablist" aria-label="Choisir une lettre"></div>
       </div>
       <p class="card-nav-hint">touche les lettres ou les points pour naviguer · la suite défile lentement</p>
+      <p class="stage-close hand">et ce n'est que la première façon de te nommer.</p>
     </div>
   </section>
 
@@ -72,10 +94,13 @@
     </div>
     <div class="dziedzom-text">
       <p class="reveal">Certains prénoms se contentent d'être dits.<br />Le tien a l'air de chanter tout seul.</p>
-      <p class="reveal">Il y a une chaleur dans cette sonorité, quelque chose d' ancien et de doux à la fois — comme une voix qu'on aurait déjà entendue sans savoir d'où elle venait.</p>
+      <p class="reveal">Il y a une chaleur dans cette sonorité, quelque chose d'ancien et de doux à la fois — comme une voix qu'on aurait déjà entendue sans savoir d'où elle venait.</p>
+      <p class="reveal">On dirait que ce prénom a été choisi exprès pour ne ressembler à aucun autre, et ça se voit dès qu'on l'écrit.</p>
       <p class="reveal hand-sign">et puis, il n'y a que toi pour porter ce nom.</p>
     </div>
-    <div class="petals" aria-hidden="true"></div>
+    <svg class="bloom bloom-dz-1" aria-hidden="true"><use href="#bloom"/></svg>
+    <svg class="bloom bloom-dz-2" aria-hidden="true"><use href="#bloom"/></svg>
+    <div class="petals tone-rose" data-count="10" aria-hidden="true"></div>
   </section>
 
   <!-- ============ ÉTAPE 4 — JOY ============ -->
@@ -87,7 +112,11 @@
     <div class="joy-text">
       <p class="reveal">Some names sound like a feeling.</p>
       <p class="reveal">Some people make that feeling a little more real.</p>
+      <p class="reveal">And this one, it turns out, was never just a word.</p>
     </div>
+    <svg class="bloom bloom-joy-1" aria-hidden="true"><use href="#bloom"/></svg>
+    <svg class="bloom bloom-joy-2" aria-hidden="true"><use href="#bloom"/></svg>
+    <div class="petals tone-gold" data-count="5" aria-hidden="true"></div>
   </section>
 
   <!-- ============ ÉTAPE 5 — SON PORTRAIT ============ -->
@@ -98,7 +127,9 @@
         <img src="assets/images/majoie.jpg" alt="Portrait de Majoie" id="portraitImg" />
       </figure>
       <p class="portrait-caption reveal">et puis il y a toi, simplement.</p>
+      <p class="portrait-hand hand reveal">la seule photo qu'il me fallait.</p>
     </div>
+    <div class="petals tone-dim" data-count="4" aria-hidden="true"></div>
   </section>
 
   <!-- ============ ÉTAPE 6 — LA LETTRE ============ -->
@@ -123,7 +154,12 @@
     <div class="finale-text">
       <p class="reveal">Trois noms.<br />Une seule personne.<br />Et une petite pensée qui a pris la forme d'un site.</p>
       <p class="reveal thanks">Merci d'avoir pris le temps de découvrir ceci.</p>
+      <p class="reveal hand finale-hand">si un jour tu veux savoir pourquoi ces trois noms… tu sais où me trouver.</p>
     </div>
+    <svg class="bloom bloom-fin-1" aria-hidden="true"><use href="#bloom"/></svg>
+    <svg class="bloom bloom-fin-2" aria-hidden="true"><use href="#bloom"/></svg>
+    <svg class="bloom bloom-fin-3" aria-hidden="true"><use href="#bloom"/></svg>
+    <div class="petals tone-dim" data-count="5" aria-hidden="true"></div>
     <button class="btn-top" id="topBtn" type="button">recommencer doucement</button>
   </section>
 

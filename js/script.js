@@ -54,8 +54,11 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 window.addEventListener("load", () => {
   document.body.classList.add("loaded");
   initDust();
+  initPetals();
   initProgress();
   initHeroEnter();
+  initParallax();
+  initMagnetic();
   initReveals();
   initLetters();
   initNamedReveals();
@@ -65,6 +68,27 @@ window.addEventListener("load", () => {
   initTopButton();
   initLightSection();
 });
+
+/* ============================================================
+   Pétales — générés aléatoirement dans chaque .petals
+   ============================================================ */
+function initPetals() {
+  if (reduceMotion) return;
+
+  document.querySelectorAll(".petals[data-count]").forEach((layer) => {
+    const count = parseInt(layer.dataset.count || "6", 10);
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement("i");
+      const size = 6 + Math.random() * 8;          // 6–14px de large
+      p.style.left = `${2 + Math.random() * 96}%`;
+      p.style.width = `${size}px`;
+      p.style.height = `${size * 1.35}px`;
+      p.style.animationDuration = `${11 + Math.random() * 11}s`;
+      p.style.animationDelay = `${-Math.random() * 20}s`;
+      layer.appendChild(p);
+    }
+  });
+}
 
 /* ============================================================
    Particules lumineuses (canvas discret)
@@ -175,6 +199,65 @@ function initHeroEnter() {
 }
 
 /* ============================================================
+   Parallaxe douce du héros (souris uniquement)
+   ============================================================ */
+function initParallax() {
+  if (reduceMotion || !window.matchMedia("(pointer: fine)").matches) return;
+
+  const hero = document.getElementById("hero");
+  const inner = hero.querySelector(".hero-inner");
+  let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+
+  hero.addEventListener("pointermove", (e) => {
+    const r = hero.getBoundingClientRect();
+    tx = ((e.clientX - r.left) / r.width - 0.5) * 14;
+    ty = ((e.clientY - r.top) / r.height - 0.5) * 10;
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+  hero.addEventListener("pointerleave", () => { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(tick); });
+
+  function tick() {
+    cx += (tx - cx) * 0.06;
+    cy += (ty - cy) * 0.06;
+    inner.style.transform = `translate3d(${cx.toFixed(2)}px, ${cy.toFixed(2)}px, 0)`;
+    if (Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      raf = null;
+    }
+  }
+}
+
+/* ============================================================
+   Bouton magnétique (micro-interaction)
+   ============================================================ */
+function initMagnetic() {
+  if (reduceMotion || !window.matchMedia("(pointer: fine)").matches) return;
+
+  const btn = document.getElementById("enterBtn");
+  let raf = null, tx = 0, ty = 0, cx = 0, cy = 0;
+
+  btn.addEventListener("pointermove", (e) => {
+    const r = btn.getBoundingClientRect();
+    tx = (e.clientX - (r.left + r.width / 2)) * 0.22;
+    ty = (e.clientY - (r.top + r.height / 2)) * 0.28;
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+  btn.addEventListener("pointerleave", () => { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(tick); });
+
+  function tick() {
+    cx += (tx - cx) * 0.14;
+    cy += (ty - cy) * 0.14;
+    btn.style.translate = `${cx.toFixed(2)}px ${cy.toFixed(2)}px`;
+    if (Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      raf = null;
+    }
+  }
+}
+
+/* ============================================================
    Révélations génériques au scroll
    ============================================================ */
 function initReveals() {
@@ -235,12 +318,20 @@ function initLetters() {
     });
   });
 
+  function swap(el) {
+    el.classList.remove("card-swap");
+    void el.offsetWidth; // re-déclenche l'animation
+    el.classList.add("card-swap");
+  }
+
   function render(i) {
     const item = CONFIG.letters[i];
     cardLetter.textContent = item.letter;
     cardLetter.classList.toggle("gold", i > 0);
     cardWord.textContent = item.word;
     cardText.textContent = item.text;
+    swap(cardWord);
+    swap(cardText);
 
     letters.forEach((el, j) => {
       el.classList.toggle("active", j === i);
@@ -272,6 +363,7 @@ function initLetters() {
       setTimeout(() => {
         stage.style.opacity = "1";
         stage.style.transform = "none";
+        stage.classList.add("revealed");
         started = true;
         show(0);
         schedule();
@@ -288,6 +380,7 @@ function initLetters() {
     letters.forEach((el) => el.classList.add("in"));
     stage.style.opacity = "1";
     stage.style.transform = "none";
+    stage.classList.add("revealed");
     render(0);
     return;
   }
